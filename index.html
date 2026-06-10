@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — EnhancedOps.ninja</title>
+<style>
+  :root {
+    --teal: #1D9E75;
+    --teal-dark: #0F6E56;
+    --teal-light: #E1F5EE;
+    --teal-deep: #085041;
+    --coral: #D85A30;
+    --coral-light: #FAECE7;
+    --gray-50: #F8F8F7;
+    --gray-100: #F1EFE8;
+    --gray-200: #D3D1C7;
+    --gray-500: #888780;
+    --gray-700: #444441;
+    --gray-900: #1a1a19;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --border: 0.5px solid #D3D1C7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; background: var(--gray-50); color: var(--gray-900); line-height: 1.5; }
+
+  header { background: #fff; border-bottom: var(--border); padding: 0 2rem; display: flex; align-items: center; gap: 14px; height: 60px; }
+  .logo-icon { width: 34px; height: 34px; background: var(--teal); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .logo-text { font-size: 16px; font-weight: 600; color: var(--gray-900); }
+  .logo-sub { font-size: 12px; color: var(--gray-500); margin-left: auto; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab { padding: 7px 16px; border: var(--border); border-radius: 999px; cursor: pointer; font-size: 13px; background: #fff; color: var(--gray-500); transition: all .15s; }
+  .tab:hover { border-color: var(--teal); color: var(--teal); }
+  .tab.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+  .controls { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; background: #fff; border: var(--border); border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 1.25rem; }
+  .ctrl-group { display: flex; align-items: center; gap: 10px; }
+  .ctrl-label { font-size: 12px; color: var(--gray-500); white-space: nowrap; }
+  .ctrl-val { font-size: 14px; font-weight: 600; min-width: 22px; color: var(--gray-900); }
+  select { font-size: 13px; padding: 5px 10px; border: var(--border); border-radius: var(--radius-md); background: #fff; color: var(--gray-900); cursor: pointer; }
+  input[type=range] { accent-color: var(--teal); cursor: pointer; }
+
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .metric { background: #fff; border: var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+  .metric-lbl { font-size: 11px; color: var(--gray-500); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .04em; }
+  .metric-val { font-size: 22px; font-weight: 600; }
+  .metric-val.green { color: var(--teal-dark); }
+  .metric-val.red { color: var(--coral); }
+
+  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--gray-500); margin: 1.5rem 0 .5rem; }
+
+  .card { background: #fff; border: var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; }
+  .card-head { display: grid; align-items: center; gap: 8px; padding: 10px 16px; background: var(--gray-100); border-bottom: var(--border); font-size: 12px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .05em; }
+  .card-head.billed { grid-template-columns: minmax(0,2.2fr) 100px 90px 90px 80px; }
+  .card-head.free-head { grid-template-columns: minmax(0,1fr) 60px; }
+  .col-r { text-align: right; }
+
+  .line { display: grid; align-items: center; gap: 8px; padding: 9px 16px; border-bottom: var(--border); }
+  .line:last-child { border-bottom: none; }
+  .line.billed { grid-template-columns: minmax(0,2.2fr) 100px 90px 90px 80px; }
+  .line.free-line { grid-template-columns: minmax(0,1fr) 60px; }
+
+  .svc-name { font-size: 13px; font-weight: 500; }
+  .svc-sub { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+  .vol-ctrl { display: flex; align-items: center; gap: 6px; }
+  .vol-ctrl input[type=range] { flex: 1; min-width: 50px; }
+  .vol-num { font-size: 12px; color: var(--gray-500); min-width: 34px; text-align: right; }
+  .cell { font-size: 13px; text-align: right; }
+  .cell.cogs { color: var(--coral); }
+  .cell.price { color: var(--teal-dark); font-weight: 600; }
+  .cell.mgn { color: var(--gray-500); }
+  .free-badge { display: inline-block; font-size: 11px; background: var(--teal-light); color: var(--teal-deep); padding: 2px 9px; border-radius: 999px; font-weight: 500; }
+
+  .subtotal { display: grid; gap: 8px; padding: 9px 16px; background: var(--gray-100); border-top: var(--border); }
+  .subtotal.billed { grid-template-columns: minmax(0,2.2fr) 100px 90px 90px 80px; }
+  .sub-lbl { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+  .sub-cell { font-size: 12px; font-weight: 600; text-align: right; }
+  .sub-cell.cogs { color: var(--coral); }
+  .sub-cell.price { color: var(--teal-dark); }
+
+  footer { text-align: center; font-size: 12px; color: var(--gray-500); padding: 2rem 1rem; border-top: var(--border); margin-top: 2rem; }
+  footer a { color: var(--teal); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    .summary { grid-template-columns: repeat(2,1fr); }
+    .card-head.billed, .line.billed, .subtotal.billed { grid-template-columns: minmax(0,1.6fr) 80px 74px 74px 60px; }
+    .controls { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">
+    <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg>
+  </div>
+  <span class="logo-text">EnhancedOps.ninja</span>
+  <span class="logo-sub">Clearinghouse pricing calculator</span>
+</header>
+
+<div class="page">
+
+  <div class="tabs" id="tabs">
+    <div class="tab active" onclick="setProfile('gp',this)">General practice</div>
+    <div class="tab" onclick="setProfile('wound',this)">Wound care / SNF</div>
+    <div class="tab" onclick="setProfile('specialty',this)">Specialty clinic</div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <span class="ctrl-label">Physicians:</span>
+      <input type="range" id="phys-sl" min="1" max="50" value="1" step="1" oninput="setPhys(this.value)" style="width:140px;">
+      <span class="ctrl-val" id="phys-out">1</span>
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">Markup:</span>
+      <select id="markup-sel" onchange="calc()">
+        <option value="2">2× (50% margin)</option>
+        <option value="2.5" selected>2.5× (60% margin)</option>
+        <option value="3">3× (67% margin)</option>
+      </select>
+    </div>
+    <div class="ctrl-group" style="margin-left:auto;">
+      <span class="ctrl-label" style="font-size:11px;">Stedi pay-as-you-go · No monthly minimum · <a href="https://www.stedi.com/pricing" target="_blank">stedi.com/pricing</a></span>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="metric"><div class="metric-lbl">Stedi COGS / mo</div><div class="metric-val red" id="s-cogs">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Your price / mo</div><div class="metric-val green" id="s-price">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Gross profit / mo</div><div class="metric-val green" id="s-profit">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Gross margin</div><div class="metric-val" id="s-margin">—</div></div>
+  </div>
+
+  <div id="groups"></div>
+
+  <footer>
+    Built by <a href="https://enhancedops.ninja" target="_blank">EnhancedOps.ninja</a> &nbsp;·&nbsp;
+    Powered by <a href="https://www.stedi.com" target="_blank">Stedi</a> clearinghouse &nbsp;·&nbsp;
+    Pricing current as of June 2026
+  </footer>
+</div>
+
+<script>
+const PROFILES = {
+  gp:       [300,30,20,15,40,300,300,50,2,40,40],
+  wound:    [400,10,80,60,50,400,400,80,1,50,60],
+  specialty:[200,20,10,10,30,200,200,30,1,30,30]
+};
+
+const SERVICES = [
+  {
+    group: 'Eligibility & benefits', icon: '&#10003;',
+    items: [
+      {key:'elig',  name:'Eligibility checks',     sub:'270/271 · real-time & batch',          tiers:[[1,250,.30],[251,3500,.15],[3501,10000,.10],[10001,1e9,.08]]},
+      {key:'disco', name:'Insurance discovery',     sub:'Find a patient\'s active coverage',    tiers:[[1,100,1.50],[101,750,1.00],[751,1250,.75],[1251,1e9,.65]]},
+      {key:'mbi',   name:'MBI lookups',             sub:'Find a patient\'s Medicare ID',        tiers:[[1,100,1.00],[101,750,.75],[751,1250,.50],[1251,1e9,.40]]},
+      {key:'cob',   name:'COB checks',              sub:'Determine payer primacy & billing order',tiers:[[1,100,1.00],[101,750,.75],[751,1250,.50],[1251,1e9,.40]]},
+      {key:'epdf',  name:'Eligibility PDFs',        sub:'Eligibility responses as readable PDFs', flat:.05},
+    ]
+  },
+  {
+    group: 'Claims processing', icon: '&#9632;',
+    items: [
+      {key:'claim', name:'Claim submissions',       sub:'837P professional · 837I institutional · 837D dental', tiers:[[1,500,.30],[501,2500,.20],[2501,10000,.12],[10001,1e9,.10]]},
+      {key:'era',   name:'ERAs',                    sub:'835 · payer adjudication details',     tiers:[[1,500,.20],[501,2500,.15],[2501,10000,.10],[10001,1e9,.08]]},
+      {key:'status',name:'Claim status checks',     sub:'276/277 · check claim status on demand',tiers:[[1,250,.30],[251,3500,.15],[3501,10000,.10],[10001,1e9,.08]]},
+      {key:'attach',name:'Claim attachments',       sub:'275 · supporting attachments for claims',flat:.75},
+      {key:'cpdf',  name:'CMS-1500 PDFs',           sub:'Professional claims as readable PDFs', flat:.05},
+      {key:'erapdf',name:'ERA PDFs',                sub:'835 ERAs as readable PDFs',            flat:.05},
+    ]
+  },
+  {
+    group: 'Included free', icon: '&#9675;',
+    free: true,
+    items: [
+      {key:'277ca', name:'Claim acknowledgments',   sub:'277CA · confirmation payers received claims'},
+      {key:'enroll',name:'Transaction enrollment',  sub:'Submit & track enrollments via API'},
+      {key:'payers',name:'Payers API',              sub:'Programmatic access to Stedi\'s payer list (3,400+ payers)'},
+      {key:'agent', name:'Stedi Agent AI',          sub:'AI assistant for eligibility recovery & payer finder'},
+      {key:'mcp',   name:'MCP server',              sub:'AI agent access to Stedi for eligibility & payer search'},
+      {key:'support',name:'Real-time support',      sub:'Dedicated Slack / Teams · avg response under 10 min'},
+    ]
+  }
+];
+
+let vols = {};
+let physicians = 1;
+
+function stediCost(svc, qty) {
+  if (!qty || svc.free) return 0;
+  if (svc.flat) return qty * svc.flat;
+  let cost = 0, rem = qty;
+  for (const [lo, hi, rate] of svc.tiers) {
+    if (rem <= 0) break;
+    const n = Math.min(rem, hi - lo + 1);
+    cost += n * rate;
+    rem -= n;
+  }
+  return cost;
+}
+
+function fmt(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmtR(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+function setPhys(v) {
+  physicians = parseInt(v);
+  document.getElementById('phys-out').textContent = physicians;
+  const prof = PROFILES[currentProfile];
+  const allItems = SERVICES.flatMap(g => g.items);
+  allItems.forEach((s, i) => {
+    if (!s.free) {
+      vols[s.key] = Math.round((prof[i] || 0) * physicians);
+      const sl = document.getElementById('sl-' + s.key);
+      if (sl) { sl.value = vols[s.key]; sl.max = Math.max(vols[s.key] * 3, 20); }
+      const vo = document.getElementById('vo-' + s.key);
+      if (vo) vo.textContent = vols[s.key].toLocaleString();
+    }
+  });
+  calc();
+}
+
+let currentProfile = 'gp';
+
+function setProfile(p, el) {
+  currentProfile = p;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const prof = PROFILES[p];
+  const allItems = SERVICES.flatMap(g => g.items);
+  allItems.forEach((s, i) => {
+    if (!s.free) {
+      vols[s.key] = Math.round((prof[i] || 0) * physicians);
+      const sl = document.getElementById('sl-' + s.key);
+      if (sl) { sl.value = vols[s.key]; sl.max = Math.max(vols[s.key] * 3, 20); }
+      const vo = document.getElementById('vo-' + s.key);
+      if (vo) vo.textContent = vols[s.key].toLocaleString();
+    }
+  });
+  calc();
+}
+
+function updateVol(key, val) {
+  vols[key] = parseInt(val);
+  document.getElementById('vo-' + key).textContent = parseInt(val).toLocaleString();
+  calc();
+}
+
+function calc() {
+  const markup = parseFloat(document.getElementById('markup-sel').value);
+  let grandCogs = 0, grandPrice = 0;
+
+  SERVICES.forEach(g => {
+    if (g.free) return;
+    let gCogs = 0, gPrice = 0;
+    g.items.forEach(s => {
+      const qty = vols[s.key] || 0;
+      const cogs = stediCost(s, qty);
+      const price = cogs * markup;
+      gCogs += cogs; gPrice += price;
+      const cogsEl = document.getElementById('cogs-' + s.key);
+      const priceEl = document.getElementById('price-' + s.key);
+      const mgnEl = document.getElementById('mgn-' + s.key);
+      if (cogsEl) cogsEl.textContent = cogs > 0 ? fmt(cogs) : '—';
+      if (priceEl) priceEl.textContent = price > 0 ? fmt(price) : '—';
+      if (mgnEl) mgnEl.textContent = price > 0 ? Math.round((price - cogs) / price * 100) + '%' : '—';
+    });
+    grandCogs += gCogs; grandPrice += gPrice;
+    const gcEl = document.getElementById('gc-' + g.group.replace(/\W/g,''));
+    const gpEl = document.getElementById('gp-' + g.group.replace(/\W/g,''));
+    if (gcEl) gcEl.textContent = gCogs > 0 ? fmtR(gCogs) : '—';
+    if (gpEl) gpEl.textContent = gPrice > 0 ? fmtR(gPrice) : '—';
+  });
+
+  const margin = grandPrice > 0 ? Math.round((grandPrice - grandCogs) / grandPrice * 100) : 0;
+  document.getElementById('s-cogs').textContent = fmtR(grandCogs);
+  document.getElementById('s-price').textContent = fmtR(grandPrice);
+  document.getElementById('s-profit').textContent = fmtR(grandPrice - grandCogs);
+  document.getElementById('s-margin').textContent = grandPrice > 0 ? margin + '%' : '—';
+}
+
+function buildUI() {
+  const prof = PROFILES['gp'];
+  const allItems = SERVICES.flatMap(g => g.items);
+  allItems.forEach((s, i) => { if (!s.free) vols[s.key] = prof[i] || 0; });
+
+  const container = document.getElementById('groups');
+  container.innerHTML = '';
+
+  SERVICES.forEach(g => {
+    const gid = g.group.replace(/\W/g, '');
+    let html = `<div class="section-label">${g.group}</div><div class="card">`;
+
+    if (g.free) {
+      html += `<div class="card-head free-head"><div>Service</div><div class="col-r">Cost</div></div>`;
+      g.items.forEach(s => {
+        html += `<div class="line free-line">
+          <div><div class="svc-name">${s.name}</div><div class="svc-sub">${s.sub}</div></div>
+          <div style="text-align:right"><span class="free-badge">Free</span></div>
+        </div>`;
+      });
+    } else {
+      html += `<div class="card-head billed">
+        <div>Service</div>
+        <div class="col-r">Volume / mo</div>
+        <div class="col-r">Stedi COGS</div>
+        <div class="col-r">Your price</div>
+        <div class="col-r">Margin</div>
+      </div>`;
+      g.items.forEach(s => {
+        const qty = vols[s.key] || 0;
+        const maxV = Math.max(qty * 3, 20);
+        const rateNote = s.flat ? ' · $' + s.flat.toFixed(2) + '/unit flat' : ' · tiered pricing';
+        html += `<div class="line billed">
+          <div><div class="svc-name">${s.name}</div><div class="svc-sub">${s.sub}${rateNote}</div></div>
+          <div class="vol-ctrl">
+            <input type="range" id="sl-${s.key}" min="0" max="${maxV}" value="${qty}" step="1" oninput="updateVol('${s.key}',this.value)">
+            <span class="vol-num" id="vo-${s.key}">${qty.toLocaleString()}</span>
+          </div>
+          <div class="cell cogs" id="cogs-${s.key}">—</div>
+          <div class="cell price" id="price-${s.key}">—</div>
+          <div class="cell mgn" id="mgn-${s.key}">—</div>
+        </div>`;
+      });
+      html += `<div class="subtotal billed">
+        <div class="sub-lbl">Subtotal</div>
+        <div></div>
+        <div class="sub-cell cogs" id="gc-${gid}">—</div>
+        <div class="sub-cell price" id="gp-${gid}">—</div>
+        <div></div>
+      </div>`;
+    }
+
+    html += `</div>`;
+    container.innerHTML += html;
+  });
+
+  calc();
+}
+
+buildUI();
+</script>
+</body>
+</html>
